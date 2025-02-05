@@ -15,7 +15,7 @@ To set up Device Information Only mode:
 
    ```bash
    curl --request PATCH \
-   "https://api.cloudflare.com/client/v4/zones/{zone_id}/devices/policy/certificates" \
+   "https://api.cloudflare.com/client/v4/zones/$ZONE_ID/devices/policy/certificates" \
    --header "Authorization: Bearer $CLOUDFLARE_API_TOKEN" \
    --header "Content-Type: application/json" \
    --data '{"enabled": true}'

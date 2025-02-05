@@ -38,7 +38,7 @@ To create a new policy, open [Zero Trust](https://one.dash.cloudflare.com/) and 
 <TabItem label="API">
 
 ```bash
-curl https://api.cloudflare.com/client/v4/accounts/{account_id}/gateway/rules \
+curl https://api.cloudflare.com/client/v4/accounts/$ACCOUNT_ID/gateway/rules \
 --header "X-Auth-Email: <EMAIL>" \
 --header "X-Auth-Key: <API_KEY>" \
 --header "Content-Type: application/json" \
@@ -101,7 +101,7 @@ curl https://api.cloudflare.com/client/v4/accounts/{account_id}/gateway/rules \
 <TabItem label="API">
 
 ```bash
-curl https://api.cloudflare.com/client/v4/accounts/{account_id}/gateway/rules \
+curl https://api.cloudflare.com/client/v4/accounts/$ACCOUNT_ID/gateway/rules \
 --header "X-Auth-Email: <EMAIL>" \
 --header "X-Auth-Key: <API_KEY>" \
 --header "Content-Type: application/json" \
@@ -159,7 +159,7 @@ We recommend adding a catch-all policy to the bottom of your network policy list
 <TabItem label="API">
 
 ```bash
-curl https://api.cloudflare.com/client/v4/accounts/{account_id}/gateway/rules \
+curl https://api.cloudflare.com/client/v4/accounts/$ACCOUNT_ID/gateway/rules \
 --header "X-Auth-Email: <EMAIL>" \
 --header "X-Auth-Key: <API_KEY>" \
 --header "Content-Type: application/json" \

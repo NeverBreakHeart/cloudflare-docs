@@ -48,7 +48,7 @@ You can control potential risk and shape user behavior without applying heavy-ha
 </TabItem> <TabItem label="API">
 
 ```bash
-curl https://api.cloudflare.com/client/v4/accounts/{account_id}/gateway/rules \
+curl https://api.cloudflare.com/client/v4/accounts/$ACCOUNT_ID/gateway/rules \
 --header "X-Auth-Email: <EMAIL>" \
 --header "X-Auth-Key: <API_KEY>" \
 --header "Content-Type: application/json" \
@@ -117,7 +117,7 @@ In this context, if some traffic is unknown to your organization, Cloudflare wil
 </TabItem> <TabItem label="API">
 
 ```bash title="Allow known applications and websites"
-curl https://api.cloudflare.com/client/v4/accounts/{account_id}/gateway/rules \
+curl https://api.cloudflare.com/client/v4/accounts/$ACCOUNT_ID/gateway/rules \
 --header "X-Auth-Email: <EMAIL>" \
 --header "X-Auth-Key: <API_KEY>" \
 --header "Content-Type: application/json" \
@@ -142,7 +142,7 @@ curl https://api.cloudflare.com/client/v4/accounts/{account_id}/gateway/rules \
 ```
 
 ```bash title="Block security risks"
-curl https://api.cloudflare.com/client/v4/accounts/{account_id}/gateway/rules \
+curl https://api.cloudflare.com/client/v4/accounts/$ACCOUNT_ID/gateway/rules \
 --header "X-Auth-Email: <EMAIL>" \
 --header "X-Auth-Key: <API_KEY>" \
 --header "Content-Type: application/json" \
@@ -167,7 +167,7 @@ curl https://api.cloudflare.com/client/v4/accounts/{account_id}/gateway/rules \
 ```
 
 ```bash title="Isolate all other traffic"
-curl https://api.cloudflare.com/client/v4/accounts/{account_id}/gateway/rules \
+curl https://api.cloudflare.com/client/v4/accounts/$ACCOUNT_ID/gateway/rules \
 --header "X-Auth-Email: <EMAIL>" \
 --header "X-Auth-Key: <API_KEY>" \
 --header "Content-Type: application/json" \
