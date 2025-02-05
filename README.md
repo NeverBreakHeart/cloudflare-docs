@@ -1,4 +1,4 @@
-# Cloudflare Docs
+# Cloudflare Docs.
 
 **[View the docs →](https://developers.cloudflare.com/)**
 
@@ -58,13 +58,12 @@ Cloudflare and any contributors reserve all other rights, whether under their re
 
 Please note that we may use AI tools to help us review technical documentation, pull requests and other issues submitted to our public GitHub page in order to identify and correct mistakes and other inconsistencies in our developer documentation. Please refrain from sharing any personal information in your submissions.
 
-
 ## 🧞 Commands
 
 All commands are run from the root of the project, from a terminal:
 
 | Command                   | Action                                      |
-|:--------------------------|:--------------------------------------------|
+| :------------------------ | :------------------------------------------ |
 | `npm install`             | Installs dependencies                       |
 | `npm run dev`             | Starts local dev server at `localhost:1111` |
 | `npx astro build`         | Build your production site to `./dist/`     |
