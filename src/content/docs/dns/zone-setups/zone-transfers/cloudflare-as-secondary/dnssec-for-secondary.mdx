@@ -55,6 +55,10 @@ https://api.cloudflare.com/client/v4/zones/{zone_id}/dnssec \
 }'
 ```
 
+:::note[NSEC or NSEC3]
+By default, Cloudflare uses a [safe NSEC implementation](/dns/dnssec/enable-nsec3/) for authenticated denial of existence ([RFC 7129](https://www.rfc-editor.org/rfc/rfc7129.html)). If you are an Enterprise customer and must use NSEC3 for compliance reasons, also set `dnssec_use_nsec3` to `true` when making the API call.
+:::
+
 2. Use the [DNSSEC Details endpoint](/api/resources/dns/subresources/dnssec/methods/get/) to get the necessary values to create a **DS** record at your registrar.
 
 3. <Render file="dnssec-registrar-steps" />
@@ -69,7 +73,7 @@ https://api.cloudflare.com/client/v4/zones/{zone_id}/dnssec \
 
 - Your secondary zone in Cloudflare already exists and zone transfers from your primary DNS provider are working correctly.
 - Your primary DNS provider transfers out DNSSEC related records, such as RRSIG, DNSKEY, and NSEC.
-- [Authenticated denial of existence (RFC 7129)](https://www.rfc-editor.org/rfc/rfc7129.html): If your primary DNS provider uses NSEC3 (instead of NSEC), you must manually [enable NSEC3 support](#) via API.
+- [Authenticated denial of existence (RFC 7129)](https://www.rfc-editor.org/rfc/rfc7129.html): If your primary DNS provider uses NSEC3 (instead of NSEC), you must manually [enable NSEC3 support](/dns/dnssec/enable-nsec3/) on Cloudflare via API.
 
 
 ### Steps
