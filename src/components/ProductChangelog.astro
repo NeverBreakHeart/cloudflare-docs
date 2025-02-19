@@ -35,6 +35,6 @@ const changelogs = await getChangelogs({ filter });
 	changelogs.map((entry) => (
 		<h3>{entry.data.date.toISOString().slice(0, 10)}</h3>
 		<h4>{entry.data.description}</h4>
-		<p>For more information, refer to the <a href={entry.data.link}>dedicated changelog post</a>.</p>
+		<p>For more information, refer to the <a href={`/changelog/${entry.id}`}>dedicated changelog post</a>.</p>
 	))
 }
