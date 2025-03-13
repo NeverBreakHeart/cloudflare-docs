@@ -2,14 +2,16 @@
 {}
 ---
 
-import { Markdown, GlossaryTooltip } from "~/components";
+import { Markdown, GlossaryTooltip, Details } from "~/components";
 
-[Durable Objects](/durable-objects/) are available on both the Workers Free and [Workers Paid plans](/workers/platform/pricing/#workers), and are billed while the Durable Object is active (including the <GlossaryTooltip term="request context"> request context</GlossaryTooltip>).
+Durable Objects are billed only while the Durable Object is active (includes the <GlossaryTooltip term="request context"> request context</GlossaryTooltip>).
 
-|                      | Paid plan                                                                                                                               |
-| -------------------- | --------------------------------------------------------------------------------------------------------------------------------------- |
-| Requests             | 1 million, + $0.15/million<br/> Includes HTTP requests, RPC sessions<sup>1</sup>, WebSocket messages<sup>2</sup>, and alarm invocations |
-| Duration<sup>3</sup> | 400,000 GB-s, + $12.50/million GB-s<sup>4,5</sup>                                                                                       |
+|                      | Free plan                           | Paid plan                                                                                                                               |
+| -------------------- | ----------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------- |
+| Requests             | Capped at 100,000 per day           | 1 million, + $0.15/million<br/> Includes HTTP requests, RPC sessions<sup>1</sup>, WebSocket messages<sup>2</sup>, and alarm invocations |
+| Duration<sup>3</sup> | Capped at <br/> 13,000 GB-s per day | 400,000 GB-s, + $12.50/million GB-s<sup>4,5</sup>                                                                                       |
+
+<Details header="Footnotes" open={true}>
 
 <sup>1</sup> Each [RPC session](/workers/runtime-apis/rpc/lifecycle/) is billed as one request to your Durable Object. Every [RPC method call](/durable-objects/best-practices/create-durable-object-stubs-and-send-requests/) on a [Durable Objects stub](/durable-objects/) is its own RPC session and therefore a single billed request.
 
@@ -29,3 +31,5 @@ await durableObjectStub.cat(); // billed as a request
 <sup>4</sup> Duration is billed in wall-clock time as long as the Object is active, but is shared across all requests active on an Object at once. Calling `accept()` on a WebSocket in an Object will incur duration charges for the entire time the WebSocket is connected. Note that the request context for a Durable Object extends at least 60 seconds after the last client disconnects. If you prefer, use the [WebSocket hibernation API](/durable-objects/best-practices/websockets/#websocket-hibernation-api) to avoid incurring duration charges once all event handlers finish running.
 
 <sup>5</sup> Duration billing charges for the 128 MB of memory your Durable Object is allocated, regardless of actual usage. If your account creates many instances of a single Durable Object class, Durable Objects may run in the same isolate on the same physical machine and share the 128 MB of memory. These Durable Objects are still billed as if they are allocated a full 128 MB of memory.
+
+</Details>

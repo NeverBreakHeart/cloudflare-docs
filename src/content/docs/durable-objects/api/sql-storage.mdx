@@ -33,7 +33,7 @@ export class MyDurableObject extends DurableObject {
 }
 ```
 
-:::note[SQLite in Durable Objects Beta]
+:::note[SQLite in Durable Objects]
 SQL API methods accessed with `ctx.storage.sql` are only allowed on [Durable Object classes with SQLite storage backend](/durable-objects/reference/durable-objects-migrations/#enable-sqlite-storage-backend-on-new-durable-object-class-migration) and will return an error if called on Durable Object classes with a key-value storage backend.
 :::
 
@@ -161,7 +161,7 @@ Providing a type parameter does _not_ validate that the query result matches you
 
 Your type must conform to the shape of a TypeScript [Record](https://www.typescriptlang.org/docs/handbook/utility-types.html#recordkeys-type) type representing the name (`string`) of the column and the type of the column. The column type must be a valid `SqlStorageValue`: one of `ArrayBuffer | string | number | null`.
 
-For example, 
+For example,
 
 ```ts
 type User = {

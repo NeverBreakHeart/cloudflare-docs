@@ -51,10 +51,10 @@ export class Counter extends DurableObject {
 
 ## Methods
 
-:::note[SQLite in Durable Objects Beta]
+:::note[SQLite in Durable Objects]
+SQLite-backed Durable Objects can have a private, embedded SQLite database. When deploying a new Durable Object class, users can [use a SQLite storage backend](/durable-objects/best-practices/access-durable-objects-storage/#sqlite-storage-backend) to access the [SQL API](/durable-objects/api/sql-storage/#exec).
 
-The new beta version of Durable Objects is available where each Durable Object has a private, embedded SQLite database. When deploying a new Durable Object class, users can [opt-in to a SQLite storage backend](/durable-objects/best-practices/access-durable-objects-storage/#sqlite-storage-backend) to access the new [SQL API](/durable-objects/api/sql-storage/#exec). Otherwise, a Durable Object class has a key-value storage backend.
-
+Otherwise, a Durable Object class has a key-value storage backend.
 :::
 
 The Durable Object Storage API comes with several methods, including key-value (KV) API, SQL API, and point-in-time-recovery (PITR) API.
@@ -263,4 +263,4 @@ The `put()` method returns a `Promise`, but most applications can discard this p
 
 - [Durable Objects: Easy, Fast, Correct – Choose Three](https://blog.cloudflare.com/durable-objects-easy-fast-correct-choose-three/)
 - [WebSockets API](/durable-objects/best-practices/websockets/)
-```
+

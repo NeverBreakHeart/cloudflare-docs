@@ -272,12 +272,6 @@ You can rename the `DurableObjectExample` class to `UpdatedName` and delete an o
 
 ## Enable SQLite storage backend on new Durable Object class migration
 
-:::note[SQLite in Durable Objects Beta]
-
-The new beta version of Durable Objects is available where each Durable Object has a private, embedded SQLite database. When deploying a new Durable Object class, users can opt-in to a SQLite storage backend in order to access new [SQL API](/durable-objects/api/sql-storage/#exec). Otherwise, a Durable Object class has a key-value storage backend.
-
-:::
-
 To allow a new Durable Object class to use a SQLite storage backend, use `new_sqlite_classes` on the migration in your Worker's `wrangler` configuration file:
 
 <WranglerConfig>
