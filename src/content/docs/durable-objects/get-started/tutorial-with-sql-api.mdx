@@ -84,7 +84,7 @@ export class MyDurableObject extends DurableObject {
 
 </TabItem> </Tabs>
 
-Workers communicate with a Durable Object using [remote-procedure call](/workers/runtime-apis/rpc/#_top). Public methods on a Durable Object class are exposed as [RPC methods](/durable-objects/best-practices/create-durable-object-stubs-and-send-requests/) to be called by another Worker.
+Workers communicate with a Durable Object using [remote-procedure call](/workers/runtime-apis/rpc/#_top). Public methods on a Durable Object class are exposed as [RPC methods](/durable-objects/features/create-durable-object-stubs-and-send-requests/) to be called by another Worker.
 
 Your file should now look like:
 
@@ -138,7 +138,7 @@ Durable Objects do not receive requests directly from the Internet. Durable Obje
 This is achieved by configuring a binding in the calling Worker for each Durable Object class that you would like it to be able to talk to. These bindings must be configured at upload time. Methods exposed by the binding can be used to communicate with particular Durable Objects.
 :::
 
-A Worker is used to [access Durable Objects](/durable-objects/best-practices/create-durable-object-stubs-and-send-requests/).
+A Worker is used to [access Durable Objects](/durable-objects/features/create-durable-object-stubs-and-send-requests/).
 
 To communicate with a Durable Object, the Worker's fetch handler should look like the following:
 
@@ -185,7 +185,7 @@ In the code above, you have:
 5. Called a Durable Object by invoking a RPC method, `sayHello()`, on the Durable Object, which returns a `Hello, World!` string greeting.
 6. Received an HTTP response back to the client by constructing a HTTP Response with `return new Response()`.
 
-Refer to [Access a Durable Object from a Worker](/durable-objects/best-practices/create-durable-object-stubs-and-send-requests/) to learn more about communicating with a Durable Object.
+Refer to [Access a Durable Object from a Worker](/durable-objects/features/create-durable-object-stubs-and-send-requests/) to learn more about communicating with a Durable Object.
 
 ## 4. Configure Durable Object bindings
 
@@ -255,6 +255,6 @@ By finishing this tutorial, you have successfully created, tested and deployed a
 
 ### Related resources
 
-- [Create Durable Object stubs](/durable-objects/best-practices/create-durable-object-stubs-and-send-requests/)
-- [Access Durable Objects Storage](/durable-objects/best-practices/access-durable-objects-storage/)
+- [Create Durable Object stubs](/durable-objects/features/create-durable-object-stubs-and-send-requests/)
+- [Access Durable Objects Storage](/durable-objects/features/access-durable-objects-storage/)
 - [Miniflare](https://github.com/cloudflare/workers-sdk/tree/main/packages/miniflare) - Helpful tools for mocking and testing your Durable Objects.

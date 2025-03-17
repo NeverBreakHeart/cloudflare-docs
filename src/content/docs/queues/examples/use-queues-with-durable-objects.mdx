@@ -49,7 +49,7 @@ The following Worker script:
 2. Passes request data to the Durable Object.
 3. Publishes to a queue from within the Durable Object.
 
-The `constructor()` in the Durable Object makes your `Environment` available (in scope) on `this.env` to the [`fetch()` handler](/durable-objects/best-practices/create-durable-object-stubs-and-send-requests/) in the Durable Object.
+The `constructor()` in the Durable Object makes your `Environment` available (in scope) on `this.env` to the [`fetch()` handler](/durable-objects/features/create-durable-object-stubs-and-send-requests/) in the Durable Object.
 
 ```ts
 interface Env {

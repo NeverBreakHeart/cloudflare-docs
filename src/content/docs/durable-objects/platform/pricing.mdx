@@ -7,6 +7,15 @@ sidebar:
 
 import { Render } from "~/components"
 
+Durable Objects are available both on Workers Free and Workers Paid plans.
+
+- **Workers Free plan**: Only Durable Objects with SQLite storage backend are available.
+- **Workers Paid plan**: Durable Objects with both SQLite storage and key-value storage are available.
+
+:::note
+If you wish to downgrade from a Workers Paid plan to a Workers Free plan, you must first ensure that you have deleted all namespaces for Durable Objects with key-value storage backend.
+:::
+
 Durable Objects can incur two types of billing: compute and storage.
 
 <Render file="durable-objects-pricing" product="durable-objects" params={{product:"durable-objects"}}/>
@@ -16,7 +25,7 @@ Durable Objects can incur two types of billing: compute and storage.
 These examples exclude the costs for the Workers calling the Durable Objects. When modelling the costs of a Durable Object, note that:
 
 * Inactive objects receiving no requests do not incur any duration charges.
-* The [WebSocket Hibernation API](/durable-objects/best-practices/websockets#websocket-hibernation-api) can dramatically reduce duration-related charges for Durable Objects communicating with clients over the WebSocket protocol, especially if messages are only transmitted occasionally at sparse intervals.
+* The [WebSocket Hibernation API](/durable-objects/features/websockets#websocket-hibernation-api) can dramatically reduce duration-related charges for Durable Objects communicating with clients over the WebSocket protocol, especially if messages are only transmitted occasionally at sparse intervals.
 
 #### Example 1
 
