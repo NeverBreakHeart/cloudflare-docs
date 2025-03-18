@@ -340,3 +340,11 @@
   languages: [TypeScript]
   cloudflare: false
   updated: 2024-10-07
+- link: https://github.com/harshil1712/e-com-d1
+  id: E-commerce Store
+  description: An application to showcase D1 read replication in the context of an online store.
+  tags: []
+  products: [Workers, D1]
+  languages: [TypeScript]
+  cloudflare: true
+  updated: 2025-02-27
