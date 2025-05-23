@@ -1,0 +1,22 @@
+---
+title: Control incoming requests
+pcx_content_type: overview
+sidebar:
+  order: 3
+---
+
+Use Cloudflare WAF Managed Rules to apply custom criteria for all incoming HTTP requests.
+
+## Security Models
+
+- Positive Security policy: Allow specific requests and deny everything else.
+- Negative Security policy: Block specific requests and allow everything else.
+
+
+## Actions
+
+- Log: Test rule effectiveness before committing to a more severe action.
+- Allow: Allow matching requests to access the site.
+- Block: Block matching requests from accessing the site.
+- CAPTCHA Challenge: Rules will be shown a CAPTCHA before proceeding.
+- Javascript Challenge: Rules will be shown a five second Javascript confirmation before proceeding.

@@ -1,0 +1,36 @@
+---
+title: Secure against attacks
+pcx_content_type: overview
+sidebar:
+  order: 5
+---
+
+Review the differents actions you can take to secure your website against attacks.
+
+## Orange cloud all proper subdomains
+
+When a subdomain is set to **Proxied** (also known as orange-clouded), Cloudflare proxying is active for that record will resolve to a Cloudflare IP.
+
+Refer to [Proxy status](/dns/proxy-status/) for more information.
+
+## Enable "I'm Under Attack" mode (IAUM)
+
+If you are under attack and have this feature enabled during the attack, visitors will receive an interstitial page for about five seconds while the traffic is analyzed to make sure it is a legitimate human visitor. The vast majority of Layer 7 attack scripts are defeated by IUAM and can be honed via Page Rules.
+
+Refer to [I'm Under Attack Mode](/fundamentals/reference/under-attack-mode/) for more information.
+
+## Change Access Control List (ACL)
+
+An ACL refers to rules that are applied to port numbers or IP address that are available on a host permitting use of the service. When you only allow Cloudflare IPs, you eliminate threats attempting to attack your origin IP range. 
+
+Refer to [Cloudflare IP Ranges](https://www.cloudflare.com/ips) for more information.
+
+## Change Origin IPs and update Cloudflare DNS records
+
+If your origin is still being attacked, consider moving your Origin IPs and updating your Cloudflare DNS records. 
+
+Refer to [Prevent DDoS attacks](/learning-paths/prevent-ddos-attacks/concepts/) for detailed guidance.
+
+:::note
+To learn about best practices for DDoS protection, review [Respond to DDoS attacks](/ddos-protection/best-practices/respond-to-ddos-attacks/).
+:::
