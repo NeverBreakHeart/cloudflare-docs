@@ -7,7 +7,7 @@ sidebar:
 
 import { Render, Details } from "~/components";
 
-`cloudflared` can route to non-HTTP applications on your private network using their private hostname (for example, `wiki.internal.local`). Private hostname routes are especially useful when the application has an unknown or ephemeral IP, which often occurs when infrastructure is provisioned by a third-party cloud provider.
+`cloudflared` can route to HTTP and non-HTTP applications on your private network using their private hostname (for example, `wiki.internal.local`). Private hostname routes are especially useful when the application has an unknown or ephemeral IP, which often occurs when infrastructure is provisioned by a third-party cloud provider.
 
 :::note[Availability]
 Hostname routes currently require Gateway resolver policies, an Enterprise-only feature. If you are on a Free or Pay-as-you-go plan, you will need to connect the application using its [IP address](/cloudflare-one/connections/connect-networks/private-net/cloudflared/connect-cidr/) and [configure Local Domain Fallback](/cloudflare-one/connections/connect-networks/private-net/cloudflared/private-dns/) to resolve its private hostname.
@@ -26,16 +26,15 @@ Figures 1 and 2 illustrate the flow of DNS and network traffic when a user conne
 ![Figure 1: DNS resolution for a private hostname](~/assets/images/cloudflare-one/connections/private-hostname-route-1.png "Figure 1: DNS resolution for private hostname")
 
 1. The WARP client sends the DNS query to the Gateway resolver for resolution.
-2. Based on the configured resolver policies, Gateway determines that `wiki.internal.local` should be resolved by a custom DNS resolver. Therefore, Gateway sends the DNS request down Cloudflare Tunnel to the private network where the custom DNS resolver is located.
-3. `cloudflared` does a DNS lookup to figure out what the origin IP is for `wiki.internal.local`.
-4. The Gateway resolver now knows that the origin IP is `10.0.0.5`.
-5. Rather than responding to the DNS query with the actual origin IP, Gateway responds with a random IP address from the following CGNAT range:
+2. Based on the configured resolver policies, Gateway determines that `wiki.internal.local` should be resolved by a custom DNS resolver.
+3. Gateway does a DNS lookup for `wiki.internal.local` through Cloudflare Tunnel, and the custom DNS resolver returns the origin IP (`10.0.0.5`).
+4. Rather than responding to the DNS query with the actual origin IP, Gateway responds with a random IP address from the following CGNAT range:
 	- **IPv4**: `100.80.0.0/16`
 	- **IPv6**: `2606:4700:0cf1:4000::/64`
 
 	The selected CGNAT IP is called the initial resolved IP.
-6. Gateway's network engine stores the mapping between the private hostname (`wiki.internal.local`), initial resolved IP (`100.80.0.1`), and the actual IP (`10.0.0.5`).
-7. The WARP client receives the initial resolved IP (`100.80.0.1`) in the DNS response.
+5. Gateway's network engine stores the mapping between the private hostname (`wiki.internal.local`), initial resolved IP (`100.80.0.1`), and the actual IP (`10.0.0.5`).
+6. The WARP client receives the initial resolved IP (`100.80.0.1`) in the DNS response.
 
 As shown in Figure 2 below, the WARP client will now send `wiki.internal.local` traffic to the initial resolved IP. The initial resolved IP mechanism is required because Gateway's network engine operates at L3/L4 and can only see IPs (not hostnames) when processing the connection. Because the packet's destination IP falls within the designated CGNAT range, Gateway knows that it corresponds to a hostname route and can apply hostname-based policies. Traffic that passes your Gateway policies will route through Cloudflare Tunnel to the application's actual origin IP.
 
