@@ -33,6 +33,36 @@ Configuring `assets.not_found_handling` to `single-page-application` overrides t
 
 <Render file="navigation_requests" />
 
+## Advanced routing control
+
+For more explicit control over SPA routing behavior, you can use `run_worker_first` with an array of route patterns. This approach disables the automatic `Sec-Fetch-Mode: navigate` detection and gives you explicit control over which requests should be handled by your Worker script vs served as static assets.
+
+<WranglerConfig>
+
+```json
+{
+	"name": "my-spa-worker",
+	"compatibility_date": "$today",
+	"main": "./src/index.ts",
+	"assets": {
+		"directory": "./dist/",
+		"binding": "ASSETS",
+		"run_worker_first": [
+			"/app/**",        // App routes go to Worker for SPA handling
+			"!/app/assets/**" // Exception: static assets served directly
+		]
+	}
+}
+```
+
+</WranglerConfig>
+
+This configuration provides explicit routing control without relying on browser navigation headers, making it ideal for complex SPAs that need fine-grained routing behavior. Your Worker script will need to handle the matched routes and use the assets binding to serve the appropriate content.
+
+<Aside type="caution">
+When using `run_worker_first`, requests matching the specified patterns will always invoke your Worker script. If you're on the free tier and exceed your request limits, these requests will receive a 429 (Too Many Requests) response instead of falling back to static asset serving. Consider this when designing your routing patterns.
+</Aside>
+
 ## Local Development
 
 If you are using a Vite-powered SPA framework, you might be interested in using our [Vite plugin](/workers/vite-plugin/) which offers a Vite-native developer experience.
