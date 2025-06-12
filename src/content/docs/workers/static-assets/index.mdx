@@ -122,9 +122,12 @@ If you want the Worker code to execute before serving assets, you can use the `r
     	[assets]
     	directory = "./dist"
     	run_worker_first = [
-    		"/api/**",          # API routes go to Worker first
-    		"/auth/**",         # Auth routes go to Worker first  
-    		"!/api/public/**"   # Exception: public API docs served as assets
+    		# API routes go to Worker first
+    		"/api/**",
+    		# Auth routes go to Worker first
+    		"/auth/**",
+    		# Exception: public API docs served as assets
+    		"!/api/public/**"
     	]
 
     	```
