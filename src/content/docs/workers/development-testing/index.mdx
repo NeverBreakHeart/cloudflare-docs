@@ -17,6 +17,8 @@ import {
 	InlineBadge,
 	CardGrid,
 	Card,
+	Type,
+	TypeScriptExample,
 } from "~/components";
 
 Cloudflare Workers offers three distinct development modes to build, run, and test your Worker code before deploying to production. Choose from [fully **local development**](/workers/development-testing/#local-development) with simulated resources, [**hybrid development**](/workers/development-testing/#hybrid-development) that combines local execution with remote resource connections, or [legacy **remote development**](/workers/development-testing/#remote-development-legacy) that runs entirely on Cloudflare's infrastructure.
@@ -320,7 +322,112 @@ If you have use-cases for connecting to any of the remote resources above, pleas
 
 ### API
 
-TO-DO
+Wrangler provides programmatic utilities to help tooling authors support hybrid development sessions when running Workers code with [Miniflare](/workers/testing/miniflare/).
+
+Key APIs include:
+
+- [`experimental_startMixedModeSession`](#experimental_startmixedmodesession) - starts a hybrid development session that allows interaction with remote bindings
+- [`unstable_convertConfigBindingsToStartWorkerBindings`](#unstable_convertconfigbindingstostartworkerbindings) - utility for converting binding definitions
+- [`experimental_maybeStartOrUpdateMixedModeSession`](#experimental_maybestartorupdatemixedmodesession) - convenience function to easily start or update a hybrid session
+
+#### `experimental_startMixedModeSession`
+
+This function starts a hybrid development session for a given set of bindings. It accepts options to control session behavior, including an `auth` option with your Cloudflare account ID and API token for remote binding access.
+
+It returns an object with:
+
+- `ready` <Type text="Promise<void>" />: Resolves when the session is ready.
+- `dispose` <Type text="() => Promise<void>" />: Stops the session.
+- `updateBindings` <Type text="(bindings: StartDevWorkerInput['bindings']) => Promise<void>" />: Updates session bindings.
+- `mixedModeConnectionString` <Type text="MixedModeConnectionString" />: String to pass to Miniflare for remote binding access.
+
+#### `unstable_convertConfigBindingsToStartWorkerBindings`
+
+The `unstable_readConfig` utility returns an `Unstable_Config` object which includes the definition of the bindings included in the configuration file. These bindings definitions
+are however not directly compatible with `experimental_startMixedModeSession`. It can be quite convenient to however read the binding declarations with `unstable_readConfig` and then
+pass them to `experimental_startMixedModeSession`, so for this wrangler exposes `unstable_convertConfigBindingsToStartWorkerBindings` which is a simple utility to convert
+the bindings in an `Unstable_Config` object into a structure that can be passed to `experimental_startMixedModeSession`.
+
+<Aside type="note">
+	This type conversion is temporary. In the future, the types will be unified so
+	you can pass the config object directly to
+	`experimental_startMixedModeSession`.
+</Aside>
+
+#### `experimental_maybeStartOrUpdateMixedModeSession`
+
+This wrapper simplifies hybrid session management. It takes:
+
+- The path to your Wrangler config, or an object with remote bindings.
+- The current hybrid session details (or `null` if none).
+
+It returns:
+
+- `null` if no hybrid session is needed.
+- An object with the hybrid session details if started or updated.
+
+The function:
+
+- based on the first argument prepares the input arguments for the hybrid session
+- if there are no remote bindings to be used (nor a pre-existing hybrid session) it returns null, signaling that no hybrid session is needed
+- if the details of an existing hybrid session have been provided it updates the hybrid session accordingly
+- otherwise if starts a new hybrid session
+- returns the hybrid session details (that can later be passed as the second argument to `experimental_maybeStartOrUpdateMixedModeSession`)
+
+#### Example
+
+Here's a basic example of using Miniflare with `experimental_maybeStartOrUpdateMixedModeSession` to provide a hybrid dev session. This example uses a single hardcoded KV binding.
+
+<TypeScriptExample>
+```ts
+import { Miniflare, MiniflareOptions } from "miniflare";
+import { experimental_maybeStartOrUpdateMixedModeSession } from "wrangler";
+
+let mf: Miniflare | null;
+
+let mixedModeSessionDetails: Awaited<
+  ReturnType<typeof experimental_maybeStartOrUpdateMixedModeSession>
+> | null = null;
+
+async function startOrUpdateDevSession() {
+  mixedModeSessionDetails =
+    await experimental_maybeStartOrUpdateMixedModeSession(
+      {
+        bindings: {
+            MY_KV: {
+                type: 'kv_namespace',
+                id: 'kv-id',
+                remote: true,
+            }
+        }
+      },
+      mixedModeSessionDetails
+    );
+
+  const miniflareOptions: MiniflareOptions = {
+    scriptPath: "./worker.js",
+    kvNamespaces: {
+      MY_KV: {
+        id: "kv-id",
+        mixedModeConnectionString:
+          mixedModeSessionDetails?.session.mixedModeConnectionString,
+      },
+    },
+  };
+
+  if (!mf) {
+    mf = new Miniflare(miniflareOptions);
+  } else {
+    mf.setOptions(miniflareOptions);
+  }
+}
+
+// ... tool logic that invokes `startOrUpdateDevSession()` ...
+
+// ... once the dev session is no longer needed run
+//  `mixedModeSessionDetails?.session.dispose()`
+```
+</TypeScriptExample>
 
 ## Remote development (Legacy)
 
