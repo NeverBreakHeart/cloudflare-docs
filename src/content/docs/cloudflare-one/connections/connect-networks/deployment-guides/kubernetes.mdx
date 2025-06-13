@@ -7,13 +7,17 @@ sidebar:
 
 [Kubernetes](https://kubernetes.io/) is a container orchestration tool that helps deploy applications onto physical or virtual machines, scale the deployment to meet traffic demands, and push updates without downtime. The Kubernetes cluster, or environment, where the application instances are running is connected internally through a private network. You can install the `cloudflared` daemon inside of the Kubernetes cluster in order to connect applications inside of the cluster to Cloudflare.
 
-This tutorial will cover how to expose a Kubernetes service to the public Internet using `cloudflared`. For the purposes of this example, we will deploy a basic web application alongside `cloudflared` in Google Kubernetes Engine (GKE). The same principles apply to any other Kubernetes environment (such as `minikube`, `kubeadm`, or a cloud-based Kubernetes service) where `cloudflared` can connect to Cloudflare's network.
+This tutorial will cover how to expose a Kubernetes service to the public Internet using a [remotely-managed](/cloudflare-one/connections/connect-networks/get-started/tunnel-useful-terms/#remotely-managed-tunnel) Cloudflare Tunnel. For the purposes of this example, we will deploy a basic web application alongside `cloudflared` in Google Kubernetes Engine (GKE). The same principles apply to any other Kubernetes environment (such as `minikube`, `kubeadm`, or a cloud-based Kubernetes service) where `cloudflared` can connect to Cloudflare's network.
+
+:::note[Locally-managed tunnels]
+If you are looking to set up a [locally-managed tunnel](/cloudflare-one/connections/connect-networks/get-started/tunnel-useful-terms/#locally-managed-tunnel) in Kubernetes, refer to the [example code in GitHub](https://github.com/cloudflare/argo-tunnel-examples/tree/master/named-tunnel-k8s).
+:::
 
 ## Architecture
 
 ![Diagram showing how a user connects to Kubernetes services through Cloudflare Tunnel](~/assets/images/cloudflare-one/connections/connect-apps/kubernetes-tunnel.png)
 
-As shown in the diagram, we recommend setting up `cloudflared` as an adjacent deployment to the application deployments. Having a separate Kubernetes deployment for `cloudflared` allows you to scale `cloudflared` independently of the application. In the `cloudflared` deployment, you can spin up [multiple replicas](/cloudflare-one/connections/connect-networks/configure-tunnels/tunnel-availability/) running the same Cloudflare Tunnel -- there is no need to build a dedicated tunnel for each pod. Each `cloudflared` replica / pod can reach all Kubernetes services in the cluster.
+As shown in the diagram, we recommend setting up `cloudflared` as an adjacent [deployment](https://kubernetes.io/docs/concepts/workloads/controllers/deployment/) to the application deployments. Having a separate Kubernetes deployment for `cloudflared` allows you to scale `cloudflared` independently of the application. In the `cloudflared` deployment, you can spin up [multiple replicas](/cloudflare-one/connections/connect-networks/configure-tunnels/tunnel-availability/) running the same Cloudflare Tunnel -- there is no need to build a dedicated tunnel for each pod. Each `cloudflared` replica / pod can reach all Kubernetes services in the cluster.
 
 :::note
 We do not recommend using `cloudflared` in autoscaling setups because downscaling (removing replicas) will break existing user connections to that replica. Additionally, `cloudflared` does not load balance across replicas; replicas are strictly for high availability. To load balance traffic to your nodes, you can use [Cloudflare Load Balancer](/load-balancing/private-network/) or a third-party load balancer.
@@ -32,25 +36,9 @@ Once the cluster is connected to Cloudflare, you can configure Cloudflare Tunnel
 - Copy the command that appears and paste it into your local terminal.
 
 
-## Set up the web app
-
-## Create a tunnel
-
-Applications must be packaged into a containerized image, such as a Docker image, before you can run it in Kubernetes. Kubernetes uses the image to spin up multiple instances of the application.
-
-## Store the tunnel token
-
-## Install and run the tunnel
-
-## Verify tunnel status
-
-## Add a tunnel route
-
-## Test the connection
+## Create pods for the web app
 
 
-
-## Creating the Pods
 
 A pod is the basic deployable object that Kubernetes creates. It represents an instance of a running process in the cluster. The following .yml file ( httpbin-app.yml) will create a pod that contains the httpbin application. It will create two replicas so as to prevent any downtime. The application will be accessible inside the cluster at web-service:80.
 
@@ -99,7 +87,15 @@ The pods' status can be seen through the console or using the kubectl get pod co
 kubectl get pods
 ```
 
-## Routing with Cloudflare Tunnel
+## Create a tunnel
+
+Applications must be packaged into a containerized image, such as a Docker image, before you can run it in Kubernetes. Kubernetes uses the image to spin up multiple instances of the application.
+
+## Store the tunnel token
+
+## Create pods for cloudflared
+
+
 
 The tunnel can be created through the dashboard using [this guide](/cloudflare-one/connections/connect-networks/get-started/create-remote-tunnel/). Instead of running the command to install a connector you will select docker as the environment and copy just the token rather than the whole command. Configure the tunnel to route to k8.example.com from the service [http://web-service:80](http://web-service:80). Create the cloudflared-deployment.yml file with the following content.
 
@@ -158,4 +154,8 @@ This file will be deployed with the following command.
 kubectl create -f cloudflared-deployment.yml
 ```
 
-The application within the cluster will now be accessible through the domain name as configured.
+## Verify tunnel status
+
+## Add a tunnel route
+
+## Test the connection
