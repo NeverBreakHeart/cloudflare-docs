@@ -7,6 +7,8 @@ sidebar:
 
 import { FileTree } from "~/components"
 
+Use metadata to filter documents before retrieval and provide context to guide AI responses. This page covers how to apply filters and attach optional context metadata to your files.
+
 ## Metadata filtering
 Metadata filtering narrows down search results based on metadata, so only relevant content is retrieved. The filter narrows down results prior to retrieval, so that you only query the scope of documents that matter.
 
@@ -132,7 +134,7 @@ This filter identifies paths starting with `customer-a/` by using:
 
 Together, these conditions effectively select paths that begin with the provided path value.
 
-## Add a `context` field to guide AI Search
+## Add `context` field to guide AI Search
 You can optionally include a custom metadata field named `context` when uploading an object to your R2 bucket.
 
 The `context` field is attached to each chunk and passed to the LLM during an `/ai-search` query. It does not affect retrieval but helps the LLM interpret and frame the answer.
