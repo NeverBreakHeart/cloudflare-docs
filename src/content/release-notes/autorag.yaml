@@ -10,7 +10,7 @@ entries:
     description: |-
       You can now index rich format files (e.g., PDF) up to 4 MB in size, up from the previous 1 MB limit.
   - publish_date: "2025-06-12"
-    title: Index processing status
+    title: Index processing status displayed on dashboard
     description: |-
       The dashboard now includes a new “Processing” step for the indexing pipeline that displays the files currently being processed.
   - publish_date: "2025-06-12"
