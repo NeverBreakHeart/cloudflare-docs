@@ -163,7 +163,7 @@ A pod represents an instance of a running process in the cluster. In this exampl
 
 8. Instead of running the installation command, copy just the token value rather than the whole command. The token value is of the form `eyJhIjoiNWFiNGU5Z...` You will need the token for the Kubernetes manifest file.
 
-Leave this browser tab open while we finish up the Kubernetes deployment.
+Leave the Cloudflare Tunnel browser tab open while we focus on the Kubernetes deployment.
 
 ## 4. Store the tunnel token
 
@@ -303,8 +303,43 @@ Create a [Kubernetes secret](https://kubernetes.io/docs/concepts/configuration/s
 
 You should see two `cloudflared` pods and two `httpbin` pods with a `Running` status. If your `cloudflared` pods keep restarting, make sure that your `cloudflared` [parameters](/cloudflare-one/connections/connect-networks/configure-tunnels/cloudflared-parameters/run-parameters/)  are in the correct position relative to the `run` command.
 
-## Verify tunnel status
+## 6. Verify tunnel status
 
-## Add a tunnel route
+To print logs for a `cloudflared` instance:
 
-## Test the connection
+```sh
+kubectl logs pod/cloudflared-deployment-6d5f9f9666-85l5w
+```
+
+```sh output
+2025-06-11T22:00:47Z INF Starting tunnel tunnelID=64c359b6-e111-40ec-a3a9-199c2a656613
+2025-06-11T22:00:47Z INF Version 2025.6.0 (Checksum 72f233bb55199093961bf099ad62d491db58819df34b071ab231f622deff33ce)
+2025-06-11T22:00:47Z INF GOOS: linux, GOVersion: go1.24.2, GoArch: amd64
+2025-06-11T22:00:47Z INF Settings: map[loglevel:debug metrics:0.0.0.0:2000 no-autoupdate:true token:*****]
+2025-06-11T22:00:47Z INF Generated Connector ID: aff7c4a0-85a3-4ac9-8475-1e0aa1af8d94
+2025-06-11T22:00:47Z DBG Fetched protocol: quic
+2025-06-11T22:00:47Z INF Initial protocol quic
+...
+```
+
+You can also verify the connection status in the Zero Trust dashboard.
+
+## 7. Add a tunnel route
+
+Now that the tunnel is up and running, we can use the Zero Trust dashboard to route the httpbin service through the tunnel.
+
+1. Switch to the browser tab where you were configuring Cloudflare Tunnel.
+
+2. Go to the **Route tunnel** step and select the **Public hostnames** tab.
+
+3. Enter a hostname for the application (for example, `httpbin.<your-domain>.com`).
+
+4. Under **Service**, enter `http://httpbin-service`
+
+5. Select **Complete setup**.
+
+## 8. Test the connection
+
+To test, open a new browser tab and go to `httpbin.<your-domain>.com`. You should see the httpbin homepage.
+
+You can optionally [create an Access application](/cloudflare-one/applications/configure-apps/self-hosted-public-app/) to control who can access the service.
