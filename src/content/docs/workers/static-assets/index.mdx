@@ -16,8 +16,6 @@ import {
 	Description,
 	InlineBadge,
 	Icon,
-	DirectoryListing,
-	FileTree,
 	Render,
 	TabItem,
 	Tabs,
@@ -28,9 +26,25 @@ import {
 	Flex,
 	WranglerConfig,
 	Steps,
+	PackageManagers,
 } from "~/components";
 
 You can upload static assets (HTML, CSS, images and other files) as part of your Worker, and Cloudflare will handle caching and serving them to web browsers.
+
+**Start from CLI** - Scaffold a React SPA with an API Worker, and use the [Cloudflare Vite plugin](/workers/vite-plugin/).
+
+<PackageManagers
+	type="create"
+	pkg="cloudflare@latest"
+	args="my-react-app --framework=react"
+/>
+---
+
+**Or just deploy to Cloudflare**
+
+[![Deploy to Workers](https://deploy.workers.cloudflare.com/button)](https://dash.cloudflare.com/?to=/:account/workers-and-pages/create/deploy-to-workers&repository=https://github.com/cloudflare/templates/tree/main/vite-react-template)
+
+Learn more about supported frameworks on Workers.
 
 <LinkCard
 	title="Supported frameworks"
