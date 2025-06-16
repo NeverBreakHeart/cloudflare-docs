@@ -63,45 +63,12 @@ You can also configure selective Worker-first routing using an array of route pa
 		"directory": "./dist/",
 		"binding": "ASSETS",
 		"run_worker_first": [
-			"/api/**",          // All API routes go to Worker first
-			"/auth/**",         // All auth routes go to Worker first
-			"!/api/public/**"   // Exception: public API docs served as assets
+			"/api/*", // All API routes go to Worker first
+			"/auth/*", // All auth routes go to Worker first
+			"!/api/public/*" // Exception: public API docs served as assets
 		]
 	}
 }
 ```
 
 </WranglerConfig>
-
-Once the Worker has been invoked, you can defer to static-asset serving using an Assets binding:
-
-<TypeScriptExample filename="./worker/index.ts">
-
-```ts
-import { WorkerEntrypoint } from "cloudflare:workers";
-
-export default class extends WorkerEntrypoint<Env> {
-	async fetch(request: Request) {
-		// You can perform checks before fetching assets
-		const user = await checkIfRequestIsAuthenticated(request);
-
-		if (!user) {
-			return new Response("Unauthorized", { status: 401 });
-		}
-
-		// You can then just fetch the assets as normal, or you could pass in a custom Request object here if you wanted to fetch some other specific asset
-		const assetResponse = await this.env.ASSETS.fetch(request);
-
-		// You can return static asset response as-is, or you can transform them with something like HTMLRewriter
-		return new HTMLRewriter()
-			.on("#user", {
-				element(element) {
-					element.setInnerContent(JSON.stringify({ name: user.name }));
-				},
-			})
-			.transform(assetResponse);
-	}
-}
-```
-
-</TypeScriptExample>
