@@ -103,19 +103,8 @@ The default behavior for requests which don't match a static asset can be change
 
 If you want the Worker code to execute before serving assets, you can use the `run_worker_first` option. This can be set to `true` to run the Worker for all requests, or configured as an array of route patterns for selective Worker-first routing:
 
-**Run Worker for all requests:**
-<WranglerConfig>
+**Invoking your Worker on specific paths:**
 
-    ```toml
-    	[assets]
-    	directory = "./dist"
-    	run_worker_first = true
-
-    	```
-
-</WranglerConfig>
-
-**Run Worker first for specific routes only:**
 <WranglerConfig>
 
     ```toml
@@ -123,9 +112,9 @@ If you want the Worker code to execute before serving assets, you can use the `r
     	directory = "./dist"
     	run_worker_first = [
     		# API routes go to Worker first
-    		"/api/**",
+    		"/api/*",
     		# Auth routes go to Worker first
-    		"/auth/**",
+    		"/auth/*",
     		# Exception: public API docs served as assets
     		"!/api/public/**"
     	]
@@ -133,8 +122,6 @@ If you want the Worker code to execute before serving assets, you can use the `r
     	```
 
 </WranglerConfig>
-
-This selective approach allows you to protect specific routes behind authentication while serving other assets directly, and disables automatic `Sec-Fetch-Mode: navigate` detection for explicit routing control.
 
 <LinkCard
 	title="Routing options"
