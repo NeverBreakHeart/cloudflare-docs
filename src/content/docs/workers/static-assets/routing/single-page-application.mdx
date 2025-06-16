@@ -10,6 +10,8 @@ import { WranglerConfig, Aside, TypeScriptExample, Render } from "~/components";
 
 Single Page Applications (SPAs) are web applications which are client-side rendered (CSR). They are often built with a framework such as [React](/workers/framework-guides/web-apps/react/), [Vue](/workers/framework-guides/web-apps/vue/) or [Svelte](/workers/framework-guides/web-apps/svelte/). The build process of these frameworks will produce a single `/index.html` file and accompanying client-side resources (e.g. JavaScript bundles, CSS stylesheets, images, fonts, etc.). Typically, data is fetched by the client from an API with client-side requests.
 
+When you configure `single-page-application` mode, Cloudflare provides default routing behavior that automatically serves your `/index.html` file for navigation requests (those with `Sec-Fetch-Mode: navigate` headers). For more control over which paths invoke your Worker, you can use [advanced routing control](#advanced-routing-control).
+
 ## Configuration
 
 In order to deploy a Single Page Application to Workers, you must configure the `assets.directory` and `assets.not_found_handling` options in your [Wrangler configuration file](/workers/wrangler/configuration/#assets):
@@ -47,10 +49,7 @@ For more explicit control over SPA routing behavior, you can use `run_worker_fir
 	"assets": {
 		"directory": "./dist/",
 		"binding": "ASSETS",
-		"run_worker_first": [
-			"/app/**",        
-			"!/app/assets/**" 
-		]
+		"run_worker_first": ["/app/*", "!/app/assets/*"]
 	}
 }
 ```
@@ -60,11 +59,18 @@ For more explicit control over SPA routing behavior, you can use `run_worker_fir
 This configuration provides explicit routing control without relying on browser navigation headers, making it ideal for complex SPAs that need fine-grained routing behavior. Your Worker script will need to handle the matched routes and use the assets binding to serve the appropriate content.
 
 <Aside type="caution">
-When using `run_worker_first`, requests matching the specified patterns will always invoke your Worker script. If you're on the free tier and exceed your request limits, these requests will receive a 429 (Too Many Requests) response instead of falling back to static asset serving. Consider this when designing your routing patterns.
+	When using `run_worker_first`, requests matching the specified patterns will
+	always invoke your Worker script. If you're on the free tier and exceed your
+	request limits, these requests will receive a 429 (Too Many Requests) response
+	instead of falling back to static asset serving. Consider this when designing
+	your routing patterns.
 </Aside>
 
 ## Local Development
 
 If you are using a Vite-powered SPA framework, you might be interested in using our [Vite plugin](/workers/vite-plugin/) which offers a Vite-native developer experience.
 
-<Render file="static_asset_routing_reference" params={{ not_found_handling: "single-page-application" }} />
+<Render
+	file="static_asset_routing_reference"
+	params={{ not_found_handling: "single-page-application" }}
+/>
